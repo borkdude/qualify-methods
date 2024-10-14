@@ -1,5 +1,7 @@
 # qualify-methods
 
+Rewrite your instance calls to use fully qualified methods
+
 ## What does this tool do?
 
 It rewrites instance method calls in the form `(.length x)` to Clojure 1.12's
