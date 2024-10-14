@@ -2,6 +2,8 @@
 
 Rewrite your instance calls to use fully qualified methods
 
+<img src="https://files.mastodon.social/media_attachments/files/113/305/219/646/283/320/original/68294791bdce3a8c.png">
+
 ## What does this tool do?
 
 It rewrites instance method calls in the form `(.length x)` to Clojure 1.12's
