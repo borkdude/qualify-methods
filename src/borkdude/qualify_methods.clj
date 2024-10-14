@@ -34,21 +34,28 @@
                 (= 'ns v)
                 (let [ns-name (-> (z/right in-list)
                                   z/node :value)]
-                  (analyze-ns ns-name calls)
+                  (try
+                    (println "[qualify-methods] Analyzing namespace" (str ns-name))
+                    (when-not (= 'borkdude.qualify-methods ns-name)
+                      ;; This somehow ends up in a loop?
+                      (analyze-ns ns-name calls))
+                    (catch Exception _ nil))
                   (recur (z/next loc)))
                 (and (str/starts-with? (str v) "." )
                      (> (count (str v)) 1)
                      (not= '.. v))
                 (let [{:keys [row col]} (meta (z/node loc))]
-                  (when-let [{:keys [method class]}
+                  (if-let [{:keys [method class]}
                              (some (fn [{:keys [line column] :as m}]
                                      (when (and (= line row)
                                                 (= column col))
                                        m))
                                    @calls)]
                     (recur (-> (z/replace in-list
-                                          (node/coerce (symbol (.getName class) (str method))))
-                               (z/up)))))
+                                          (node/coerce (symbol (.getName class)
+                                                               (str "." method))))
+                               (z/up)))
+                    (recur (z/next loc))))
                 :else (recur (z/next loc)))
               (recur (z/next loc))))
           (recur (z/next loc)))))))
@@ -58,8 +65,12 @@
     (doseq [path paths
             file (file-seq (java.io.File. path))]
       (when (str/ends-with? (str file) ".clj")
+        (binding [*out* *err*]
+          (println "[qualify-methods] Processing file: " (str file)))
         (let [qualified (qualify-methods-of-string (slurp file))]
-          (spit file qualified))))))
+          (spit file qualified))))
+    (binding [*out* *err*]
+      (println "[qualify-methods] Done"))))
 
 (comment
   (qualify-methods-of-string (slurp "src/borkdude/test.clj"))

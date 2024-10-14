@@ -1,4 +1,4 @@
 (ns borkdude.test)
 
 (defn foo [^String x]
-  (.length x))
+  (java.lang.String/.length x))

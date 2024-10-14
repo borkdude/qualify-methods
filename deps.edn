@@ -1,3 +1,6 @@
 {:deps {org.clojure/tools.analyzer.jvm {:mvn/version "1.3.0"}
         rewrite-clj/rewrite-clj {:mvn/version "1.1.48"}}
- :aliases {}}
+ :aliases {:qualify-methods
+           {:extra-deps {io.github.borkdude/qualify-methods
+                         {:git/sha "dcffde2ec1c3c4c3b5d7f7ee6d8e17df618ac5a3"}}
+            :exec-fn borkdude.qualify-methods/qualify-methods}}}
