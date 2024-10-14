@@ -20,11 +20,17 @@ since this tool runs in the context of your application dependencies.
 ``` clojure
 :aliases {:qualify-methods
            {:extra-deps {io.github.borkdude/qualify-methods
-                         {:git/sha "c01103e6c9e66a110fab899ca2e94cfbfd630cca"}}
+                         {:git/sha "<newest-sha>"}}
             :exec-fn borkdude.qualify-methods/qualify-methods}}
 ```
 
 Then run with `clj -X:qualify-methods :paths '["src"]'`
+
+## TODO
+
+- [ ] Add tests via cognitect test runner
+- [ ] Take into account default imports like `String` vs. `java.lang.String` and
+      namespace specific imports
 
 ## License
 
